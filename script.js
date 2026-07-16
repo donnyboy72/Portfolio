@@ -109,7 +109,13 @@ function animate() {
   connect();
 }
 
-
+window.addEventListener('resize',
+  function () {
+    canvas.width = innerWidth;
+    canvas.height = innerHeight;
+    mouse.radius = ((canvas.height / 250) * (canvas.width / 250));
+    init();
+  })
 
 init();
 animate();
