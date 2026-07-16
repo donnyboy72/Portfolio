@@ -1,7 +1,6 @@
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+resizeCanvas();
 
 let particlesArray;
 
@@ -9,15 +8,21 @@ let particlesArray;
 let mouse = {
 x: null,
 y: null,
-  radius: (canvas.height / 250) * (canvas.width / 250)
+  radius: (window.innerHeight / 250) * (window.innerWidth / 250)
 }
 
 window.addEventListener('mousemove',
   function (event) {
-    mouse.x = event.x;
-    mouse.y = event.y;
+    mouse.x = event.pageX;
+    mouse.y = event.pageY;
   }
 );
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = document.documentElement.scrollHeight;
+}
+
 // create particles
 class Particle {
   constructor(x, y, directionX, directionY, size, color) {
@@ -83,39 +88,49 @@ class Particle {
   }
 }
 
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = document.documentElement.scrollHeight;
+}
+
+resizeCanvas(); // call once up front
+
+// ... Particle class unchanged ...
+
 function init() {
   particlesArray = [];
   let numberOfParticles = (canvas.height * canvas.width) / 5000;
   for (let i = 0; i < numberOfParticles; i++) {
     let size = (Math.random() * 5) + 1;
-    let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-    let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+    let x = (Math.random() * ((canvas.width - size * 2) - (size * 2)) + size * 2);
+    let y = (Math.random() * ((canvas.height - size * 2) - (size * 2)) + size * 2);
     let directionX = (Math.random() * .05) - 0.01;
     let directionY = (Math.random() * .05) - 0.01;
     let color = 'rgba(0,198,247,0.6)';
-
-    particlesArray.push(new Particle(x,y,directionX,directionY,size,color));
+    particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
   }
 }
 
 function animate() {
   requestAnimationFrame(animate);
-  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   for (let i = 0; i < particlesArray.length; i++) {
     particlesArray[i].update();
   }
-
   connect();
 }
 
 window.addEventListener('resize',
   function () {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    mouse.radius = ((canvas.height / 250) * (canvas.width / 250));
+    resizeCanvas();
+    mouse.radius = (window.innerHeight / 250) * (window.innerWidth / 250);
     init();
   })
+
+window.addEventListener('load', function () {
+  resizeCanvas();
+  init();
+});
 
 init();
 animate();
