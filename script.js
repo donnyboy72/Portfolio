@@ -100,7 +100,7 @@ function init() {
 
 function animate() {
   requestAnimationFrame(animate);
-  ctx.clearRect(0, 0, innerWidth, innerHeight);
+  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
   for (let i = 0; i < particlesArray.length; i++) {
     particlesArray[i].update();
@@ -111,8 +111,8 @@ function animate() {
 
 window.addEventListener('resize',
   function () {
-    canvas.width = innerWidth;
-    canvas.height = innerHeight;
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerWeight;
     mouse.radius = ((canvas.height / 250) * (canvas.width / 250));
     init();
   })
