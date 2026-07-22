@@ -89,8 +89,16 @@ class Particle {
 }
 
 function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = document.documentElement.scrollHeight;
+    canvas.width = window.innerWidth;
+
+    canvas.height = Math.max(
+        document.body.scrollHeight,
+        document.documentElement.scrollHeight,
+        document.body.offsetHeight,
+        document.documentElement.offsetHeight,
+        document.body.clientHeight,
+        document.documentElement.clientHeight
+    );
 }
 
 resizeCanvas(); // call once up front
@@ -112,12 +120,21 @@ function init() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  for (let i = 0; i < particlesArray.length; i++) {
-    particlesArray[i].update();
-  }
-  connect();
+    requestAnimationFrame(animate);
+
+    const pageHeight = document.documentElement.scrollHeight;
+
+    if (canvas.height !== pageHeight) {
+        resizeCanvas();
+    }
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+    }
+
+    connect();
 }
 
 window.addEventListener('resize',
