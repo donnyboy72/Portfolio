@@ -1,5 +1,11 @@
 const canvas = document.getElementById("canvas1");
 const ctx = canvas.getContext('2d');
+const menuIcon = document.querySelector('#menu-icon');
+const navLinks = document.querySelector('.nav-links');
+
+menuIcon.onclick = () => {
+  navLinks.classList.toggle('active');
+}
 resizeCanvas();
 
 let particlesArray;
