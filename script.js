@@ -11,17 +11,12 @@ y: null,
   radius: (window.innerHeight / 250) * (window.innerWidth / 250)
 }
 
-window.addEventListener('mousemove',
-  function (event) {
-    mouse.x = event.pageX;
-    mouse.y = event.pageY;
-  }
-);
+window.addEventListener("mousemove", (e) => {
+    const rect = canvas.getBoundingClientRect();
 
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = document.documentElement.scrollHeight;
-}
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+});
 
 // create particles
 class Particle {

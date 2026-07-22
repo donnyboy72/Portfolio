@@ -9,10 +9,7 @@
 }
 
 #canvas1{
-    position:fixed;
-    inset:0;
-    width:100%;
-    z-index:-2;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -297,20 +294,21 @@ section{
     border: 2px solid white;
     width:100%;
     max-width:700px;
-    padding:1rem 3rem;
+    padding: 1rem 1rem 1rem 3rem;
     font-size:1.2rem;
 }
 .input-box input::placeholder{
-    font-size: 3rem;
+    font-size: inherit;
 }
 .input{
     position: relative;
 }
 .input i{
     position: absolute;
-    font-size: 4rem;
+    font-size: 1.3rem;
     top: 50%;
-    left: 10px;
+    left: 18px;
+    color: black;
     transform: translate(50%,-50%);
 }
 footer{
