@@ -6,6 +6,17 @@ const navLinks = document.querySelector('.nav-links');
 menuIcon.onclick = () => {
   navLinks.classList.toggle('active');
 }
+
+const navItems = document.querySelectorAll('.nav-links a');
+navItems.forEach(link => {
+  link.addEventListener('click', () => {
+    // Only remove 'active' if the menu is actually open (mobile view)
+    if (navLinks.classList.contains('active')) {
+      navLinks.classList.remove('active');
+    }
+  });
+});
+
 resizeCanvas();
 
 let particlesArray;
@@ -134,8 +145,6 @@ function animate() {
     for (let i = 0; i < particlesArray.length; i++) {
         particlesArray[i].update();
     }
-
-    connect();
 }
 
 window.addEventListener('resize',
