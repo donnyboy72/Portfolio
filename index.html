@@ -14,16 +14,19 @@
         <a href="#" class="logo"><span>Donavan Watley</span></a>
 
         <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#experience">Experience</a></li>
             <li><a href="#education">Education</a></li>
+            <li><a href="#experience">Experience</a></li>
             <li><a href="#project">Projects</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
 
         <i class="fa-solid fa-bars" id="menu-icon"></i>
 
-        <button class="visit-btn">Visit Github</button>
+        <button
+            class="visit-btn"
+            onclick="window.open('https://github.com/donnyboy72', '_blank')">
+            Visit Github
+        </button>
     </header>
 
     <section id="about" class="about">
@@ -44,8 +47,13 @@
                 </div>
 
                 <div class="socials">
-                    <i class="fa-brands fa-github"></i>
-                    <i class="fa-brands fa-linkedin"></i>
+                    <a href="https://github.com/donnyboy72" target="_blank">
+                        <i class="fa-brands fa-github"></i>
+                    </a>
+
+                    <a href="https://www.linkedin.com/in/donavanwatley/" target="_blank">
+                        <i class="fa-brands fa-linkedin"></i>
+                    </a>
                 </div>
 
             </div>
@@ -169,22 +177,53 @@
 
         <div class="project-grid">
             <div class="project-card">
+                <h3>Maze Runner</h3>
+                <img src="images/JrDev.PNG" alt="">
+                <p>An educational website that teaches programming through tutorials and interactive examples.</p>
+                <p>Built with HTML, CSS, and JavaScript, focusing on responsive design and usability.</p>
+                <div class="btn-group">
+                    <a
+                        href="https://donnyboy72.github.io/Junior-Dev-to-Pro/"
+                        target="_blank"
+                        class="btn">
+                        Live Demo
+                    </a>
+                    <a
+                        href="https://github.com/donnyboy72/Junior-Dev-to-Pro"
+                        target="_blank"
+                        class="btn">
+                        Github Repo
+                    </a>
+                </div>
+            </div>
+
+            <div class="project-card">
                 <h3>True Memory Game</h3>
                 <img src="images/TrueMemGame2.PNG" alt="">
-                <p>A modern, data-driven memory training application designed to track cognitive performance over time. Built with a focus </p>
-                <p>on session analytics, scalable data simulation, and performance tracking, this project goes beyond a simple memory game.</p>
-                <div class=""btn-group">
-                    <div class="btn">Github Repo</div>
+                <p>A cognitive training app that tracks player performance and stores session data over time.</p>
+                <p>Focused on analytics, accessibility, and long-term performance visualization.</p>
+                <div class="btn-group">
+                    <a
+                        href="https://github.com/donnyboy72/TrueMemoryGame"
+                        target="_blank"
+                        class="btn">
+                        Github Repo
+                    </a>
                 </div>
             </div>
 
             <div class="project-card">
                 <h3>Maze Runner</h3>
                 <img src="images/maze-runner.PNG" alt="">
-                <p>A procedurally generated maze game built using Java Swing. Navigate from the start tile to the end tile using</p>
-               <p>keyboard controls while the maze is generated dynamically using a randomized Depth-First Search algorithm.</p>
-                <div class=""btn-group">
-                    <div class="btn">Github Repo</div>
+                <p>A Java Swing game that generates unique mazes using a randomized depth-first search algorithm.</p>
+                <p>Demonstrates object-oriented design, algorithms, and event-driven programming.</p>
+                <div class="btn-group">
+                    <a
+                        href="https://github.com/donnyboy72/MazeRunner"
+                        target="_blank"
+                        class="btn">
+                        Github Repo
+                    </a>
                 </div>
             </div>
         </div>
@@ -192,21 +231,16 @@
 
     <section class="contact" id="contact">
         <div class="input-box">
-            <h2 class="section-title">Contact Me</h2>
+            <h2 class="section-title">Contact Info</h2>
             <div class="input">
                 <input type="text" placeholder="dwatleyjobs@outlook.com">
                 <i class="fa-solid fa-envelope"></i>
             </div>
-            <div class="btn">Submit</div>
         </div>
     </section>
 
     <footer>
         <ul>
-            <li>
-                <a href="#about">About</a>
-            </li>
-
             <li>
                 <a href="#experiences">Experiences</a>
             </li>
