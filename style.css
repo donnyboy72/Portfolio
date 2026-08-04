@@ -242,6 +242,69 @@ section{
     transform: scale(1.1);
 }
 
+.contact-popup {
+    position: absolute;
+
+    top: 105%;
+    right: 50%;
+
+    transform: translateX(50%) scale(0.9);
+
+    width: 320px;
+
+    padding: 1.5rem;
+
+    border-radius: 2rem;
+
+    background: rgba(148, 148, 148, 0.15);
+
+    border: 1px solid rgba(255, 255, 255, 0.2);
+
+    backdrop-filter: blur(20px);
+
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: all 0.3s ease;
+}
+
+.contact-popup.active {
+    opacity: 1;
+
+    visibility: visible;
+
+    transform: translateX(50%) scale(1);
+}
+
+.contact-popup h3 {
+    text-align: center;
+
+    margin-bottom: 1rem;
+}
+
+.contact-popup p {
+    display: flex;
+
+    align-items: center;
+
+    gap: 1rem;
+
+    margin: 1rem 0;
+
+    font-size: 1.1rem;
+}
+
+.contact-popup i {
+    font-size: 1.2rem;
+}
+
+.info-box {
+    position: relative;
+}
+
 .section-title{
     text-align: center;
     font-size: 4rem;

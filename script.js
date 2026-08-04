@@ -17,6 +17,8 @@ navItems.forEach(link => {
   });
 });
 
+
+
 resizeCanvas();
 
 let particlesArray;
@@ -161,3 +163,11 @@ window.addEventListener('load', function () {
 
 init();
 animate();
+const contactBtn = document.getElementById("contact-btn");
+const contactPopup = document.getElementById("contact-popup");
+
+if (contactBtn && contactPopup) {
+    contactBtn.addEventListener("click", () => {
+        contactPopup.classList.toggle("active");
+    });
+}
