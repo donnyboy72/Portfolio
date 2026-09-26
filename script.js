@@ -1,173 +1,169 @@
 const canvas = document.getElementById("canvas1");
-const ctx = canvas.getContext('2d');
-const menuIcon = document.querySelector('#menu-icon');
-const navLinks = document.querySelector('.nav-links');
+const ctx = canvas.getContext("2d");
+const menuButton = document.getElementById("menu-icon");
+const navLinks = document.getElementById("nav-links");
+const navItems = document.querySelectorAll(".nav-links a");
+const header = document.querySelector(".header");
+const contactButton = document.getElementById("contact-btn");
+const contactPopup = document.getElementById("contact-popup");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-menuIcon.onclick = () => {
-  navLinks.classList.toggle('active');
-}
+document.getElementById("current-year").textContent = new Date().getFullYear();
 
-const navItems = document.querySelectorAll('.nav-links a');
-navItems.forEach(link => {
-  link.addEventListener('click', () => {
-    // Only remove 'active' if the menu is actually open (mobile view)
-    if (navLinks.classList.contains('active')) {
-      navLinks.classList.remove('active');
-    }
-  });
+menuButton.addEventListener("click", () => {
+    const isOpen = navLinks.classList.toggle("active");
+    menuButton.setAttribute("aria-expanded", String(isOpen));
+    menuButton.setAttribute("aria-label", isOpen ? "Close navigation" : "Open navigation");
+    menuButton.querySelector("i").className = isOpen ? "fa-solid fa-xmark" : "fa-solid fa-bars";
 });
 
-
-
-resizeCanvas();
-
-let particlesArray;
-
-// get mouse position
-let mouse = {
-x: null,
-y: null,
-  radius: (window.innerHeight / 250) * (window.innerWidth / 250)
-}
-
-window.addEventListener("mousemove", (e) => {
-    const rect = canvas.getBoundingClientRect();
-
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
+navItems.forEach((link) => {
+    link.addEventListener("click", () => {
+        navLinks.classList.remove("active");
+        menuButton.setAttribute("aria-expanded", "false");
+        menuButton.setAttribute("aria-label", "Open navigation");
+        menuButton.querySelector("i").className = "fa-solid fa-bars";
+    });
 });
 
-// create particles
-class Particle {
-  constructor(x, y, directionX, directionY, size, color) {
-      this.x = x;
-      this.y = y;
+contactButton.addEventListener("click", () => {
+    const isOpen = contactPopup.classList.toggle("active");
+    contactButton.setAttribute("aria-expanded", String(isOpen));
+    contactPopup.setAttribute("aria-hidden", String(!isOpen));
+});
 
-      this.directionX = directionX;
-      this.directionY = directionY;
-
-      this.velocityX = 0;
-      this.velocityY = 0;
-
-      this.size = size;
-      this.color = color;
-  }
-
-  // method to draw individual particle
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-    ctx.fillStyle = '#d6d6d6';
-    ctx.fill();
-  }
-
-  // check particle position, check mouse position, move the particles, draw the particles
-  update() {
-    // check if particle is still within canvas
-    if (this.x > canvas.width || this.x < 0) {
-      this.directionX = -this.directionX;
+document.addEventListener("click", (event) => {
+    if (!contactPopup.contains(event.target) && !contactButton.contains(event.target)) {
+        contactPopup.classList.remove("active");
+        contactButton.setAttribute("aria-expanded", "false");
+        contactPopup.setAttribute("aria-hidden", "true");
     }
+});
 
-    if (this.y > canvas.height || this.y < 0) {
-      this.directionY = -this.directionY;
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            revealObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.12 });
+
+document.querySelectorAll(".reveal").forEach((element, index) => {
+    element.style.transitionDelay = `${Math.min(index % 3, 2) * 80}ms`;
+    revealObserver.observe(element);
+});
+
+const sectionObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        navItems.forEach((link) => {
+            const target = link.getAttribute("href").slice(1);
+            link.classList.toggle("active", target === entry.target.id);
+        });
+    });
+}, { rootMargin: "-35% 0px -55%", threshold: 0 });
+
+document.querySelectorAll("section[data-section]").forEach((section) => sectionObserver.observe(section));
+window.addEventListener("scroll", () => header.classList.toggle("scrolled", window.scrollY > 24), { passive: true });
+
+let particles = [];
+let animationFrame;
+let lastCanvasHeight = 0;
+const mouse = { x: -1000, y: -1000, radius: 115 };
+
+class Signal {
+    constructor() {
+        this.x = Math.random() * window.innerWidth;
+        this.y = Math.random() * Math.max(document.documentElement.scrollHeight, window.innerHeight);
+        this.radius = Math.random() * 1.5 + 0.55;
+        this.vx = (Math.random() - 0.5) * 0.12;
+        this.vy = (Math.random() - 0.5) * 0.12;
+        this.alpha = Math.random() * 0.35 + 0.12;
     }
-
-    // check collision detection - mouse position / particle position
-    let dx = mouse.x - this.x;
-    let dy = mouse.y - this.y;
-    let distance = Math.sqrt(dx * dx + dy * dy);
-    const pushStrength = 2;
-
-    if (distance < mouse.radius + this.size) {
-
-        const angle = Math.atan2(dy, dx);
-
-        this.velocityX -= Math.cos(angle) * pushStrength;
-        this.velocityY -= Math.sin(angle) * pushStrength;
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.x < 0 || this.x > window.innerWidth) this.vx *= -1;
+        if (this.y < 0 || this.y > lastCanvasHeight) this.vy *= -1;
+        const dx = mouse.x - this.x;
+        const dy = mouse.y - this.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance < mouse.radius && distance > 0) {
+            const force = (mouse.radius - distance) / mouse.radius;
+            this.x -= (dx / distance) * force * 1.6;
+            this.y -= (dy / distance) * force * 1.6;
+        }
     }
-
-    // Apply velocity
-    this.x += this.velocityX;
-    this.y += this.velocityY;
-
-    // Slow the particle back down
-    this.velocityX *= 0.92;
-    this.velocityY *= 0.92;
-
-    // Normal drifting movement
-    this.x += this.directionX;
-    this.y += this.directionY;
-    // draw particle
-    this.draw();
-  }
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(127, 245, 233, ${this.alpha})`;
+        ctx.fill();
+    }
 }
 
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-
-    canvas.height = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.offsetHeight,
-        document.body.clientHeight,
-        document.documentElement.clientHeight
-    );
+    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+    const pageHeight = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+    canvas.style.height = `${pageHeight}px`;
+    canvas.width = Math.floor(window.innerWidth * pixelRatio);
+    canvas.height = Math.floor(pageHeight * pixelRatio);
+    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+    lastCanvasHeight = pageHeight;
+    const count = Math.min(160, Math.max(55, Math.floor((window.innerWidth * pageHeight) / 65000)));
+    particles = Array.from({ length: count }, () => new Signal());
 }
 
-resizeCanvas(); // call once up front
-
-// ... Particle class unchanged ...
-
-function init() {
-  particlesArray = [];
-  let numberOfParticles = (canvas.height * canvas.width) / 5000;
-  for (let i = 0; i < numberOfParticles; i++) {
-    let size = (Math.random() * 5) + 1;
-    let x = (Math.random() * ((canvas.width - size * 2) - (size * 2)) + size * 2);
-    let y = (Math.random() * ((canvas.height - size * 2) - (size * 2)) + size * 2);
-    let directionX = (Math.random() * .05) - 0.01;
-    let directionY = (Math.random() * .05) - 0.01;
-    let color = 'rgba(0,198,247,0.6)';
-    particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-  }
-}
-
-function animate() {
-    requestAnimationFrame(animate);
-
-    const pageHeight = document.documentElement.scrollHeight;
-
-    if (canvas.height !== pageHeight) {
-        resizeCanvas();
-    }
-
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
+function drawConnections() {
+    const nearby = particles.slice(0, 75);
+    for (let i = 0; i < nearby.length; i += 1) {
+        for (let j = i + 1; j < nearby.length; j += 1) {
+            const dx = nearby[i].x - nearby[j].x;
+            const dy = nearby[i].y - nearby[j].y;
+            const distance = Math.hypot(dx, dy);
+            if (distance < 105) {
+                ctx.beginPath();
+                ctx.moveTo(nearby[i].x, nearby[i].y);
+                ctx.lineTo(nearby[j].x, nearby[j].y);
+                ctx.strokeStyle = `rgba(73, 214, 200, ${(1 - distance / 105) * 0.08})`;
+                ctx.lineWidth = 0.55;
+                ctx.stroke();
+            }
+        }
     }
 }
 
-window.addEventListener('resize',
-  function () {
-    resizeCanvas();
-    mouse.radius = (window.innerHeight / 250) * (window.innerWidth / 250);
-    init();
-  })
+function animateSignals() {
+    const pageHeight = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+    if (Math.abs(pageHeight - lastCanvasHeight) > 4) resizeCanvas();
+    ctx.clearRect(0, 0, window.innerWidth, pageHeight);
+    particles.forEach((particle) => { particle.update(); particle.draw(); });
+    drawConnections();
+    animationFrame = requestAnimationFrame(animateSignals);
+}
 
-window.addEventListener('load', function () {
-  resizeCanvas();
-  init();
+window.addEventListener("pointermove", (event) => {
+    mouse.x = event.clientX;
+    mouse.y = event.clientY + window.scrollY;
+}, { passive: true });
+window.addEventListener("pointerleave", () => { mouse.x = -1000; mouse.y = -1000; });
+
+let resizeTimer;
+window.addEventListener("resize", () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resizeCanvas, 150);
 });
 
-init();
-animate();
-const contactBtn = document.getElementById("contact-btn");
-const contactPopup = document.getElementById("contact-popup");
-
-if (contactBtn && contactPopup) {
-    contactBtn.addEventListener("click", () => {
-        contactPopup.classList.toggle("active");
-    });
+function setAnimationPreference() {
+    cancelAnimationFrame(animationFrame);
+    resizeCanvas();
+    if (!reduceMotion.matches) animateSignals();
+    else {
+        particles.forEach((particle) => particle.draw());
+        document.querySelectorAll(".reveal").forEach((element) => element.classList.add("visible"));
+    }
 }
+
+reduceMotion.addEventListener("change", setAnimationPreference);
+window.addEventListener("load", setAnimationPreference);
