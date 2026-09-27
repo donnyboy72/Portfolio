@@ -76,10 +76,10 @@ class Signal {
     constructor() {
         this.x = Math.random() * window.innerWidth;
         this.y = Math.random() * Math.max(document.documentElement.scrollHeight, window.innerHeight);
-        this.radius = Math.random() * 1.5 + 0.55;
+        this.radius = Math.random() * 1.8 + 0.75;
         this.vx = (Math.random() - 0.5) * 0.12;
         this.vy = (Math.random() - 0.5) * 0.12;
-        this.alpha = Math.random() * 0.35 + 0.12;
+        this.alpha = Math.random() * 0.42 + 0.2;
     }
     update() {
         this.x += this.vx;
@@ -111,23 +111,23 @@ function resizeCanvas() {
     canvas.height = Math.floor(pageHeight * pixelRatio);
     ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     lastCanvasHeight = pageHeight;
-    const count = Math.min(160, Math.max(55, Math.floor((window.innerWidth * pageHeight) / 65000)));
+    const count = Math.min(220, Math.max(75, Math.floor((window.innerWidth * pageHeight) / 50000)));
     particles = Array.from({ length: count }, () => new Signal());
 }
 
 function drawConnections() {
-    const nearby = particles.slice(0, 75);
+    const nearby = particles.slice(0, 95);
     for (let i = 0; i < nearby.length; i += 1) {
         for (let j = i + 1; j < nearby.length; j += 1) {
             const dx = nearby[i].x - nearby[j].x;
             const dy = nearby[i].y - nearby[j].y;
             const distance = Math.hypot(dx, dy);
-            if (distance < 105) {
+            if (distance < 115) {
                 ctx.beginPath();
                 ctx.moveTo(nearby[i].x, nearby[i].y);
                 ctx.lineTo(nearby[j].x, nearby[j].y);
-                ctx.strokeStyle = `rgba(73, 214, 200, ${(1 - distance / 105) * 0.08})`;
-                ctx.lineWidth = 0.55;
+                ctx.strokeStyle = `rgba(73, 214, 200, ${(1 - distance / 115) * 0.12})`;
+                ctx.lineWidth = 0.7;
                 ctx.stroke();
             }
         }
