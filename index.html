@@ -3,17 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Donavan Watley is a systems and software engineer focused on Linux, hardware integration, networking, and reliable software.">
+    <meta name="description" content="Donavan Watley is a Software Engineering student with an Applied AI minor, focused on learning to build practical machine-learning-powered software.">
     <meta name="theme-color" content="#081015">
-    <title>Donavan Watley | Systems &amp; Software Engineer</title>
+    <title>Donavan Watley | Software Engineering Student · AI &amp; ML</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20261014">
+    <link rel="stylesheet" href="evolution.css?v=20261014c">
 </head>
 <body>
-    <canvas id="canvas1" aria-hidden="true"></canvas>
+    <canvas id="evolution-canvas" aria-hidden="true"></canvas>
+    <aside id="flight-drawer" class="flight-drawer" aria-labelledby="flight-title">
+        <button id="flight-drawer-toggle" class="flight-drawer-toggle" type="button" aria-expanded="false" aria-controls="flight-panel" aria-label="Open background simulation controls"><span aria-hidden="true">›</span><span class="drawer-tab-label">AI LAB</span></button>
+        <div id="flight-panel" class="flight-panel" inert><form id="evolution-controls" class="evolution-controls" aria-label="Evolution settings">
+                    <p class="section-kicker">&gt;_ EXPERIMENTAL FLIGHT LAB</p><h2 id="flight-title">Background evolution</h2><p class="demo-note">Inspired by “Learning to Fly.” Birds use food sensors and neural-network steering. Every 20 simulated seconds, selection and mutation create a new generation. A toy learning experiment, not evidence of real-world AI capability.</p>
+                    <label for="animal-count">Animals <output id="animal-value" for="animal-count">30</output></label><input id="animal-count" type="range" min="10" max="80" step="10" value="30">
+                    <label for="food-count">Food <output id="food-value" for="food-count">50</output></label><input id="food-count" type="range" min="10" max="100" step="10" value="50">
+                    <label for="neuron-count">Hidden neurons <output id="neuron-value" for="neuron-count">8</output></label><input id="neuron-count" type="range" min="2" max="16" value="8">
+                    <label for="receptor-count">Photoreceptors <output id="receptor-value" for="receptor-count">7</output></label><input id="receptor-count" type="range" min="3" max="15" step="2" value="7">
+                    <p class="demo-note">Changing a setting starts a fresh population. Use arrow keys on sliders.</p>
+                    <button id="evolution-toggle" class="btn btn-primary" type="button">Pause</button><button id="evolution-reset" class="btn btn-secondary" type="button">Reset population</button>
+                    <dl class="evolution-metrics"><div><dt>Generation</dt><dd id="generation">1</dd></div><div><dt>Food eaten · this gen</dt><dd id="food-eaten">0</dd></div><div><dt>Best fitness · all time</dt><dd id="best-fitness">0</dd></div></dl><p class="demo-note">Teal pixels = food · triangles = birds. Fitness = food eaten by one bird; best fitness spans this run. Settings reset the population. No data leaves your browser.</p><p id="evolution-status" role="status">Simulation running.</p>
+                </form></div>
+    </aside>
+
     <div class="page-noise" aria-hidden="true"></div>
     <header class="header">
         <a href="#about" class="logo" aria-label="Return to top"><span class="logo-mark">DW</span><span>Donavan Watley</span></a>
@@ -34,14 +49,14 @@
                 <div class="portrait-wrap reveal">
                     <div class="portrait-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
                     <img src="images/headshot - Copy.jpeg" alt="Portrait of Donavan Watley">
-                    <div class="availability-pill"><span></span> Building reliable systems</div>
+                    <div class="availability-pill"><span></span> Exploring practical AI &amp; ML</div>
                 </div>
                 <div class="info-box reveal">
                     <p class="eyebrow"><span class="prompt-symbol">&gt;_</span> Hello, I'm</p>
                     <h1>Donavan<br><span>Watley.</span></h1>
-                    <h2>Systems &amp; Software Engineer</h2>
-                    <p class="hero-copy">I build dependable systems at the intersection of hardware, Linux, networking, and software.</p>
-                    <div class="skill-strip" aria-label="Core technologies"><span>Linux</span><span>Rust</span><span>Java</span><span>Radar Systems</span><span>Networking</span></div>
+                    <h2>Software Engineering Student · AI &amp; ML</h2>
+                    <p class="hero-copy">I’m pursuing a B.S. in Software Engineering with an Applied AI minor, learning to build practical ML-powered software on a foundation of reliable systems.</p>
+                    <div class="skill-strip" aria-label="Core technologies"><span>Python</span><span>AI / ML Foundations</span><span>Java</span><span>Linux</span><span>Systems Thinking</span></div>
                     <div class="hero-actions">
                         <a href="files/Resume_Aug-2026.pdf" download class="btn btn-primary"><i class="fa-solid fa-download" aria-hidden="true"></i> Resume</a>
                         <button class="btn btn-secondary" id="contact-btn" type="button" aria-expanded="false" aria-controls="contact-popup">Contact me</button>
@@ -66,24 +81,33 @@
         </section>
 
         <section id="who-am-i" class="who-am-i" data-section="who-am-i">
-            <div class="section-heading reveal"><p class="section-kicker">01 / ABOUT</p><h2>Engineering with a<br><span>systems mindset.</span></h2></div>
+            <div class="section-heading reveal"><p class="section-kicker">01 / ABOUT</p><h2>Learning to build<br><span>intelligent software.</span></h2></div>
             <div class="about-grid">
                 <div class="who-container glass-panel reveal">
-                    <p>I am a software engineering student at the College of Charleston with a passion for systems programming, computer architecture, and building reliable software.</p>
+                    <p>I’m pursuing a B.S. in Software Engineering at the College of Charleston, with an Applied AI minor and an interest in turning machine learning ideas into useful software.</p>
                     <p>Before returning to school, I served five years in the United States Navy as an Aviation Electronics Technician, where I developed disciplined troubleshooting skills in high-reliability environments.</p>
-                    <p>Today, I bring that hardware-first perspective to radar systems, Linux tooling, networking, artificial intelligence, and performance engineering.</p>
+                    <p>My current direction is AI and machine learning: developing foundations in Python, data processing, and model evaluation, while exploring computer vision. My experience with hardware, Linux, and networking supports a practical approach to building and debugging software.</p>
                     <div class="value-grid"><div><strong>5+</strong><span>Years in high-reliability systems</span></div><div><strong>3.9</strong><span>College GPA</span></div><div><strong>20+</strong><span>Students mentored</span></div></div>
                 </div>
                 <div class="terminal glass-panel reveal" aria-label="Terminal-style engineering focus">
                     <div class="terminal-bar"><span></span><span></span><span></span><p>donavan@portfolio:~</p></div>
                     <div class="terminal-body">
-                        <p><span class="terminal-prompt">$</span> whoami</p><p class="terminal-output">Donavan — systems engineer &amp; builder</p>
-                        <p><span class="terminal-prompt">$</span> cat focus.txt</p><p class="terminal-output">Linux<br>Rust<br>Hardware integration<br>Reliable software</p>
+                        <p><span class="terminal-prompt">$</span> whoami</p><p class="terminal-output">Donavan — software engineering student</p>
+                        <p><span class="terminal-prompt">$</span> cat focus.txt</p><p class="terminal-output">Applied AI minor<br>Machine learning fundamentals<br>Practical ML-powered software<br>Systems thinking</p>
                         <p><span class="terminal-prompt">$</span> systemctl status curiosity</p><p class="terminal-output success">● active (running)</p>
                         <p><span class="terminal-prompt">$</span> <span class="terminal-cursor"></span></p>
                     </div>
                 </div>
             </div>
+            <figure class="focus-profile glass-panel reveal" aria-labelledby="focus-title">
+                <div><p class="section-kicker">AI / ML LEARNING FOCUS</p><h3 id="focus-title">A direction, not a scorecard.</h3><p>Relative learning interests, not assessed proficiency. Python and software engineering support my exploration of data processing, ML fundamentals, model evaluation, and computer vision.</p></div>
+                <svg viewBox="0 0 440 330" role="img" aria-labelledby="focus-svg-title focus-svg-desc">
+                    <title id="focus-svg-title">AI and ML learning-interest radar</title><desc id="focus-svg-desc">Illustrative emphasis across six learning areas; no measured skill scores.</desc>
+                    <g class="focus-grid"><path d="M220 55 315 110 315 220 220 275 125 220 125 110Z M220 92 283 128 283 202 220 238 157 202 157 128Z M220 128 252 147 252 183 220 202 188 183 188 147Z"/><path d="M220 55V275 M125 110 315 220 M125 220 315 110"/></g>
+                    <path class="focus-area" d="M220 69 296 121 282 201 220 239 164 197 135 116Z"/>
+                    <g class="focus-label"><text x="220" y="29" text-anchor="middle">Python</text><text x="326" y="103">ML</text><text x="326" y="119">fundamentals</text><text x="326" y="222">Data</text><text x="326" y="238">processing</text><text x="220" y="305" text-anchor="middle">Software engineering</text><text x="112" y="222" text-anchor="end">Model</text><text x="112" y="238" text-anchor="end">evaluation</text><text x="112" y="103" text-anchor="end">Computer</text><text x="112" y="119" text-anchor="end">vision</text></g>
+                </svg>
+            </figure>
             <div class="photo-grid reveal">
                 <figure><img src="images/babyMOOOOOOSE.jpeg" alt="Donavan outdoors with a moose"><figcaption>Explore</figcaption></figure>
                 <figure><img src="images/AKmeandRenne.jpeg" alt="Donavan traveling in Alaska"><figcaption>Travel</figcaption></figure>
@@ -96,7 +120,7 @@
             <div class="education-card glass-panel reveal">
                 <div class="education-main">
                     <div class="card-icon"><i class="fa-solid fa-graduation-cap" aria-hidden="true"></i></div>
-                    <div><p class="card-label">COLLEGE OF CHARLESTON</p><h3>B.S. Software Engineering</h3><p>Expected May 2028 <span class="dot-divider">•</span> GPA 3.9</p><div class="tag-row"><span>AI Minor</span><span>Classics Minor</span></div></div>
+                    <div><p class="card-label">COLLEGE OF CHARLESTON</p><h3>B.S. Software Engineering</h3><p>Expected May 2028 <span class="dot-divider">•</span> GPA 3.9</p><div class="tag-row"><span>Applied AI Minor</span><span>Classics Minor</span></div></div>
                 </div>
                 <div class="education-columns">
                     <div><h4>Completed coursework</h4><ul class="detail-list"><li>Computer Programming I <span>Python</span></li><li>Intro to Programming <span>Java</span></li><li>Data Structures &amp; Algorithms</li><li>Undergraduate Research</li></ul></div>
@@ -155,13 +179,15 @@
             </div>
         </section>
 
-        <section class="contact-cta"><div class="cta-card glass-panel reveal"><p class="section-kicker">LET'S BUILD SOMETHING RELIABLE</p><h2>Have a hard problem?<br><span>Let's talk systems.</span></h2><a class="btn btn-primary" href="mailto:dwatleyjobs@outlook.com">Start a conversation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></div></section>
+
+        <section class="contact-cta"><div class="cta-card glass-panel reveal"><p class="section-kicker">LET'S BUILD SOMETHING RELIABLE</p><h2>Have a hard problem?<br><span>Let's build useful software.</span></h2><a class="btn btn-primary" href="mailto:dwatleyjobs@outlook.com">Start a conversation <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a></div></section>
     </main>
 
     <footer>
-        <a href="#about" class="logo"><span class="logo-mark">DW</span><span>Donavan Watley</span></a><p>Systems thinking. Reliable execution.</p>
+        <a href="#about" class="logo"><span class="logo-mark">DW</span><span>Donavan Watley</span></a><p>AI curiosity. Systems thinking. Reliable execution.</p>
         <div class="footer-links"><a href="#who-am-i">About</a><a href="#experience">Experience</a><a href="#projects">Projects</a></div><p class="copyright">© <span id="current-year"></span> Donavan Watley</p>
     </footer>
-    <script src="script.js"></script>
+    <script src="script.js?v=20261014c"></script>
+    <script src="evolution.js?v=20261014c"></script>
 </body>
 </html>

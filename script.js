@@ -1,12 +1,9 @@
-const canvas = document.getElementById("canvas1");
-const ctx = canvas.getContext("2d");
 const menuButton = document.getElementById("menu-icon");
 const navLinks = document.getElementById("nav-links");
 const navItems = document.querySelectorAll(".nav-links a");
 const header = document.querySelector(".header");
 const contactButton = document.getElementById("contact-btn");
 const contactPopup = document.getElementById("contact-popup");
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 document.getElementById("current-year").textContent = new Date().getFullYear();
 
@@ -66,104 +63,3 @@ const sectionObserver = new IntersectionObserver((entries) => {
 
 document.querySelectorAll("section[data-section]").forEach((section) => sectionObserver.observe(section));
 window.addEventListener("scroll", () => header.classList.toggle("scrolled", window.scrollY > 24), { passive: true });
-
-let particles = [];
-let animationFrame;
-let lastCanvasHeight = 0;
-const mouse = { x: -1000, y: -1000, radius: 115 };
-
-class Signal {
-    constructor() {
-        this.x = Math.random() * window.innerWidth;
-        this.y = Math.random() * Math.max(document.documentElement.scrollHeight, window.innerHeight);
-        this.radius = Math.random() * 1.8 + 0.75;
-        this.vx = (Math.random() - 0.5) * 0.12;
-        this.vy = (Math.random() - 0.5) * 0.12;
-        this.alpha = Math.random() * 0.42 + 0.2;
-    }
-    update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        if (this.x < 0 || this.x > window.innerWidth) this.vx *= -1;
-        if (this.y < 0 || this.y > lastCanvasHeight) this.vy *= -1;
-        const dx = mouse.x - this.x;
-        const dy = mouse.y - this.y;
-        const distance = Math.hypot(dx, dy);
-        if (distance < mouse.radius && distance > 0) {
-            const force = (mouse.radius - distance) / mouse.radius;
-            this.x -= (dx / distance) * force * 1.6;
-            this.y -= (dy / distance) * force * 1.6;
-        }
-    }
-    draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(127, 245, 233, ${this.alpha})`;
-        ctx.fill();
-    }
-}
-
-function resizeCanvas() {
-    const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
-    const pageHeight = Math.max(document.documentElement.scrollHeight, window.innerHeight);
-    canvas.style.height = `${pageHeight}px`;
-    canvas.width = Math.floor(window.innerWidth * pixelRatio);
-    canvas.height = Math.floor(pageHeight * pixelRatio);
-    ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
-    lastCanvasHeight = pageHeight;
-    const count = Math.min(220, Math.max(75, Math.floor((window.innerWidth * pageHeight) / 50000)));
-    particles = Array.from({ length: count }, () => new Signal());
-}
-
-function drawConnections() {
-    const nearby = particles.slice(0, 95);
-    for (let i = 0; i < nearby.length; i += 1) {
-        for (let j = i + 1; j < nearby.length; j += 1) {
-            const dx = nearby[i].x - nearby[j].x;
-            const dy = nearby[i].y - nearby[j].y;
-            const distance = Math.hypot(dx, dy);
-            if (distance < 115) {
-                ctx.beginPath();
-                ctx.moveTo(nearby[i].x, nearby[i].y);
-                ctx.lineTo(nearby[j].x, nearby[j].y);
-                ctx.strokeStyle = `rgba(73, 214, 200, ${(1 - distance / 115) * 0.12})`;
-                ctx.lineWidth = 0.7;
-                ctx.stroke();
-            }
-        }
-    }
-}
-
-function animateSignals() {
-    const pageHeight = Math.max(document.documentElement.scrollHeight, window.innerHeight);
-    if (Math.abs(pageHeight - lastCanvasHeight) > 4) resizeCanvas();
-    ctx.clearRect(0, 0, window.innerWidth, pageHeight);
-    particles.forEach((particle) => { particle.update(); particle.draw(); });
-    drawConnections();
-    animationFrame = requestAnimationFrame(animateSignals);
-}
-
-window.addEventListener("pointermove", (event) => {
-    mouse.x = event.clientX;
-    mouse.y = event.clientY + window.scrollY;
-}, { passive: true });
-window.addEventListener("pointerleave", () => { mouse.x = -1000; mouse.y = -1000; });
-
-let resizeTimer;
-window.addEventListener("resize", () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(resizeCanvas, 150);
-});
-
-function setAnimationPreference() {
-    cancelAnimationFrame(animationFrame);
-    resizeCanvas();
-    if (!reduceMotion.matches) animateSignals();
-    else {
-        particles.forEach((particle) => particle.draw());
-        document.querySelectorAll(".reveal").forEach((element) => element.classList.add("visible"));
-    }
-}
-
-reduceMotion.addEventListener("change", setAnimationPreference);
-window.addEventListener("load", setAnimationPreference);
