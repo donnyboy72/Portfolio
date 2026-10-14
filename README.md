@@ -1,35 +1,3 @@
 # Donavan Watley’s portfolio
 
-Static portfolio for GitHub Pages. No build step or new dependencies.
-
-## Preview
-
-From this directory, run `python3 -m http.server 8000`, then open
-http://localhost:8000/ . The experiment animates the page background. Open the AI LAB arrow on the left
-to access its controls. Escape closes the panel and returns focus to the arrow.
-
-## Verify
-
-- Check the hero and About copy, education minor, and learning-interest radar.
-- Compare existing photos, experience, and project entries with the prior version.
-- In the experiment, use Pause / Resume and Reset population. Reset clears all metrics.
-- Tab through controls; use arrow keys to adjust all four sliders. Each setting change
-  restarts the population and preserves the paused/running state.
-- Leave the canvas in view for 20 simulated seconds to see the next generation.
-  Food eaten is per generation; best fitness is the highest individual food count
-  across the current run. Evolution is random and improvement is not guaranteed.
-- Check a narrow mobile viewport and browser console. Reduced-motion visitors
-  start paused; hidden tabs suspend simulation updates.
-
-## Experiment implementation
-
-`evolution.js` contains the independent simulation; `evolution.css` contains additive
-styles for the demo and About radar. The world follows the viewport, with bitmap resolution capped at 1.5×; resizing
-preserves the population and scales positions. Birds receive angular food sensors within a forward
-180° view and 180-unit range. A tanh hidden layer produces steering; speed is fixed.
-Each 20-second generation retains the best genome, selects parents by three-way
-tournament, and applies Gaussian mutations to offspring. Fitness is food eaten.
-This is an educational experiment, not a measure of real-world AI performance.
-
-Publish through the repository’s existing GitHub Pages workflow after committing
-and pushing the changes.
+https://donnyboy72.github.io/Portfolio/
