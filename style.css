@@ -44,3 +44,17 @@ section{position:relative;width:min(1440px,100%);margin:0 auto;padding:7.5rem cl
 .certificates-link:hover{text-decoration:underline;text-underline-offset:4px}
 @media(max-width:1120px) and (min-width:821px){.nav-links a{padding-left:.55rem;padding-right:.55rem;font-size:.8rem}.header .visit-btn{padding:.65rem .8rem}}
 @media(max-width:560px){.certificates-summary{gap:.8rem;flex-wrap:wrap}.certificates-summary .card-icon{width:2.7rem;height:2.7rem;font-size:1.1rem}.certificates-summary .section-kicker{font-size:.58rem;letter-spacing:.06em}.certificates-description{font-size:.75rem}.certificates-chevron{width:2rem;height:2rem}.certificates-grid{grid-template-columns:1fr}.certificate-card{padding:1.1rem}}
+
+/* Open source contributions */
+.contribution-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.35rem}
+.contribution-card{display:flex;flex-direction:column;align-items:flex-start;padding:clamp(1.5rem,3vw,2.6rem);border-radius:var(--radius-lg)}
+.contribution-card .card-icon{margin-bottom:1.5rem}
+.contribution-card h3{margin:.4rem 0 .75rem;font:600 1.65rem var(--heading);letter-spacing:-.035em}
+.contribution-card>p:not(.card-label){color:var(--muted);font-size:.9rem;margin-bottom:1.5rem}
+.contribution-card>a{display:inline-flex;align-items:center;gap:.65rem;min-height:44px;margin-top:auto;color:var(--accent-bright);font:500 .73rem var(--mono)}
+.contribution-card>a:hover{text-decoration:underline;text-underline-offset:4px}
+.contribution-card>a:focus-visible{outline:2px solid var(--accent-bright);outline-offset:5px;border-radius:4px}
+.footer-links{flex-wrap:wrap}
+@media(min-width:821px){.header .nav-links a{padding-left:.55rem;padding-right:.55rem;font-size:.8rem}}
+@media(max-width:1000px) and (min-width:821px){.header .logo>span:last-child{display:none}}
+@media(max-width:560px){.contribution-grid{grid-template-columns:1fr}.footer-links{justify-content:center}}
