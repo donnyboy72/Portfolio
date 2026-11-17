@@ -12,7 +12,7 @@
     let W = innerWidth, H = innerHeight;
     const duration = 20, step = 1 / 30;
     let config, birds, food, generation, elapsed, eaten, best, accumulator = 0, last = 0;
-    let paused = motion.matches, visible = true, frameId = null, lastPaint = 0;
+    let paused = motion.matches, visible = document.body.classList.contains('lab-active'), frameId = null, lastPaint = 0;
     const metricNodes = ["generation", "food-eaten", "best-fitness"].map(id => document.getElementById(id));
     const randomWeight = () => Math.random() * 2 - 1;
     const position = () => ({ x: Math.random() * W, y: Math.random() * H });
@@ -117,12 +117,19 @@
         drawer.classList.toggle('is-open', open);
         panel.inert = !open;
         drawerToggle.setAttribute('aria-expanded', String(open));
-        drawerToggle.setAttribute('aria-label', `${open ? 'Close' : 'Open'} background simulation controls`);
-        drawerToggle.querySelector('span').textContent = open ? '‹' : '›';
+        drawerToggle.setAttribute('aria-label', `${open ? 'Collapse' : 'Expand'} simulation controls`);
+        drawerToggle.querySelector('.control-toggle-icon').textContent = open ? '−' : '+';
     }
     drawerToggle.addEventListener('click', () => setDrawer(drawerToggle.getAttribute('aria-expanded') !== 'true'));
     drawer.addEventListener('keydown', event => {
         if (event.key === 'Escape') { setDrawer(false); drawerToggle.focus(); }
+    });
+    setDrawer(innerWidth > 700);
+    document.addEventListener('portfolio:view', event => {
+        visible = event.detail.lab;
+        last = 0; accumulator = 0;
+        if (!visible && frameId !== null) { cancelAnimationFrame(frameId); frameId = null; }
+        if (visible) { resize(); schedule(); }
     });
     function resize() {
         const oldW = W, oldH = H;

@@ -13,3 +13,11 @@
 .flight-drawer :focus-visible{outline:2px solid var(--accent-bright);outline-offset:3px}
 @media(max-width:820px){.focus-profile{grid-template-columns:1fr}.flight-drawer{top:5.5rem}}
 @media(prefers-reduced-motion:reduce){.flight-drawer{transition:none}}
+/* The lab owns the simulation and its floating control tile. */
+#evolution-canvas{display:none;z-index:0;opacity:.85}
+body.lab-active #evolution-canvas{display:block}
+body.lab-active main{position:relative;z-index:1;pointer-events:none}
+body.lab-active .flight-drawer{display:block}
+.flight-drawer{display:none;left:auto;right:1.5rem;top:7rem;bottom:auto;width:320px;max-height:calc(100svh - 8.5rem);transform:none;z-index:900;border:1px solid var(--line-bright);border-radius:1.25rem;overflow:hidden;background:rgba(14,26,33,.94);box-shadow:var(--shadow);backdrop-filter:blur(20px)}
+.flight-drawer.is-open{transform:none}.flight-drawer-toggle{position:static;width:100%;min-height:52px;flex-direction:row;justify-content:space-between;padding:.85rem 1.15rem;border:0;border-radius:0;background:transparent}.flight-drawer-toggle>span:first-child{font:500 .72rem var(--mono)}.drawer-tab-label{writing-mode:horizontal-tb;letter-spacing:.04em}.control-toggle-icon{font-size:1.4rem;line-height:1}.flight-panel{display:none;height:auto;max-height:calc(100svh - 12rem);border:0;border-radius:0;box-shadow:none;background:transparent}.flight-drawer.is-open .flight-panel{display:block;border-top:1px solid var(--line)}.evolution-controls{padding:1rem 1.15rem;gap:.45rem}.evolution-controls h2{font-size:1.2rem}
+@media(max-width:820px){.flight-drawer{top:auto;bottom:1rem;right:1rem;width:min(320px,calc(100vw - 2rem));max-height:60svh}.flight-panel{max-height:calc(60svh - 54px)}}
