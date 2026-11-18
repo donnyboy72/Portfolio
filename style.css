@@ -78,3 +78,19 @@ body.lab-active footer{display:none}
 @media(max-width:560px){.header .logo>span:last-child{display:none}#intro .info-box h1{font-size:3rem}.availability-pill{font-size:.58rem}.header-actions{gap:.7rem}}
 
 .hobbies{margin-top:2rem}.hobbies h3{font:600 1.35rem var(--heading);margin-bottom:.45rem}.hobbies p{color:var(--muted)}
+
+.skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .45rem;
+    list-style: none;
+}
+
+.skill-list li {
+    padding: .35rem .65rem;
+    border: 1px solid var(--line);
+    border-radius: .65rem;
+    color: var(--muted);
+    font-size: .82rem;
+    overflow-wrap: anywhere;
+}
